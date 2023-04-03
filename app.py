@@ -1,11 +1,8 @@
 import hashlib
 import os
-import random
-import threading
-from os import listdir
 
 import flask_login
-from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
+from flask import Flask, render_template, request, redirect, make_response
 from flask_login import login_required, logout_user, login_user
 
 from flask_login import LoginManager
@@ -31,6 +28,7 @@ login_manager.init_app(app)
 db_session.global_init("db/moviecan.db")
 
 deleteList = []
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -113,6 +111,7 @@ def register():
     params["title"] = "Регистрация"
     return render_template("register.html", **params, form=form)
 
+
 @app.route("/")
 def index():
     params = dict()
@@ -133,7 +132,6 @@ def watch():
     creator_id = db_sess.query(Video).filter(Video.url_filename == v).first().creator_id
     creator = db_sess.query(User).filter(User.id == creator_id).first()
 
-
     params = dict()
     params["title"] = video.name
     params["menu"] = [{"name": "Закладки", "url": "#"}, {"name": "О нас", "url": "#"}]
@@ -144,12 +142,14 @@ def watch():
     params["creator_name"] = creator.name
     params["channel_id"] = creator.id
 
-    followers_count = len(str(creator.followers).split(" ")) if (creator.followers != "" and creator.followers is not None) else 0
+    followers_count = len(str(creator.followers).split(" ")) if (
+            creator.followers != "" and creator.followers is not None) else 0
     count_like = len(str(video.like).split(" ")) if (video.like != "" and video.like is not None) else 0
     count_views = video.count_views
 
     params["channel_url"] = f"/channel/{db_sess.query(User).get(video.creator_id).name}"
-    params["followers_count"] = str(followers_count) + " " + word_declension(followers_count, "подписчик,подписчика,подписчиков")
+    params["followers_count"] = str(followers_count) + " " + word_declension(followers_count,
+                                                                             "подписчик,подписчика,подписчиков")
 
     params["video_name"] = video.name
     params["video_id"] = video.id
@@ -162,8 +162,6 @@ def watch():
 
     except Exception:
         params["current_user_id"] = -1
-
-
 
     resp = make_response(render_template("watch.html", **params))
 
@@ -186,7 +184,6 @@ def watch():
 
     resp.set_cookie("is_follower", str(str(params["current_user_id"]) in str(creator.followers).split(" ")),
                     max_age=60 * 60 * 24 * 365 * 2)
-
 
     db_sess.commit()
 
@@ -239,6 +236,7 @@ def create_video():
     params["title"] = "Созднание Видеоролика"
     return render_template("create_video.html", **params, form=form)
 
+
 @app.route("/delete_video/<string:url_filename>")
 @login_required
 def delete_video(url_filename):
@@ -262,6 +260,7 @@ def delete_video(url_filename):
         return 404
 
     return redirect("/")
+
 
 @app.route("/edit_video/<string:url_filename>", methods=["GET", "POST"])
 @login_required
@@ -309,14 +308,16 @@ def channel(channel):
     db_sess = db_session.create_session()
 
     creator_channel = db_sess.query(User).filter(User.name == channel).first()
-    followers_count = len(str(creator_channel.followers).split(" ")) if (creator_channel.followers is not None and creator_channel.followers != "") else 0
+    followers_count = len(str(creator_channel.followers).split(" ")) if (
+            creator_channel.followers is not None and creator_channel.followers != "") else 0
 
     params = dict()
     params["title"] = f"Канал {channel}"
     params["channel_icon"] = creator_channel.icon
     params["channel_name"] = creator_channel.name
     params["channel_id"] = creator_channel.id
-    params["channel_followers"] = str(followers_count) + " " + word_declension(followers_count, "подписчик,подписчика,подписчиков")
+    params["channel_followers"] = str(followers_count) + " " + word_declension(followers_count,
+                                                                               "подписчик,подписчика,подписчиков")
 
     try:
         params["current_user_id"] = flask_login.current_user.id
@@ -324,15 +325,15 @@ def channel(channel):
     except Exception:
         params["current_user_id"] = -1
 
-
     resp = make_response(render_template("channel.html", **params))
 
     try:
-        resp.set_cookie("is_follower", str(str(flask_login.current_user.id) in str(creator_channel.followers).split(" ")),
-                       max_age=60 * 60 * 24 * 365 * 2)
+        resp.set_cookie("is_follower",
+                        str(str(flask_login.current_user.id) in str(creator_channel.followers).split(" ")),
+                        max_age=60 * 60 * 24 * 365 * 2)
 
         resp.set_cookie("current_user_id", str(flask_login.current_user.id),
-                       max_age=60 * 60 * 24 * 365 * 2)
+                        max_age=60 * 60 * 24 * 365 * 2)
 
 
     except Exception:

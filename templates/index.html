@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+    <script type="text/javascript" src="../static/js/dynamic_content.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container_index">
+        <div class="menu_container">
+            <div style="float: left;">
+                <center style="float: left; margin-right: 10px;"><img src="{{ url_for('static', filename='icon/home.png') }}" style="width: 30px; height: auto;"></center>
+                <a href="/"><strong>Главная</strong></a><br>
+            </div><br>
+            <div style="float: left; margin-top: 10px;">
+                <center style="float: left; margin-right: 10px;"><img src="{{ url_for('static', filename='icon/shorts.png') }}" style="width: 30px; height: auto;"></center>
+                <a href="/shorts"><strong>Короткие видео</strong></a><br>
+            </div><br>
+            {% if current_user.is_authenticated %}
+                <div style="float: left; margin-top: 10px;">
+                    <center style="float: left; margin-right: 10px;"><img src="{{ url_for('static', filename='icon/channel.png') }}" style="width: 30px; height: auto;"></center>
+                    <a href="/channel/{{ current_user.name }}"><strong>Аккаунт</strong></a><br>
+                </div><br>
+
+                <div style="float: left; margin-top: 10px;">
+                    <center style="float: left; margin-right: 10px;"><img src="{{ url_for('static', filename='icon/edit.png') }}" style="width: 30px; height: auto;"></center>
+                    <a href="/edit_channel/{{ current_user.id }}"><strong>Редактировать канал</strong></a><br>
+                </div><br>
+
+                <div style="float: left; margin-top: 10px;">
+                    <center style="float: left; margin-right: 10px;"><img src="{{ url_for('static', filename='icon/create_video.png') }}" style="width: 30px; height: auto;"></center>
+                    <a href="/create_video"><strong>Создать видеоролик</strong></a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="index_content" id="index_content"></div>
+    </div>
+
+{% endblock %}

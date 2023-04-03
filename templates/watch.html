@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.7/plyr.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+    <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+    <script type="text/javascript" src="../static/js/dynamic_content_to_video.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container_watch">
+        <div style="float: left; width: calc(5% - 32px); height: 100%;"></div>
+        <div class="content">
+            <div class="item_video">
+                <video class="video" autoplay playsinline controls data-poster="{{ url_for('static', filename='preview/' + preview_filename) }}">
+                    <source src="{{ url_for('static', filename='video/' + video_filename) }}" type="video/mp4" />
+                </video>
+            </div>
+            <div class="about_video">
+                <div class="name_video">
+                    <h1 style="font-family: YouTube Sans, Roboto, sans-serif;">{{ video_name }}</h1>
+                </div>
+                <div class="channel">
+                    <img id="icon" src="{{ url_for('static', filename='icons/' + icon) }}" style="width: 40px; height: auto; float: left; margin-right: 10px; border-radius: 50%;">
+                    <a id="channel_name" href="{{ channel_url }}" style="width: auto; font-size: 18px; font-weight: 500; margin: 0px; text-decoration: none; color: rgb(0, 0, 0);">{{ creator_name }}</a><br>
+                    <h6 style="font-size: 12px; font-weight: 400; margin-top: 0px; color: rgb(150, 150, 150); float:left;">{{ followers_count }}</h6>
+                </div>
+
+                {% if current_user_id != channel_id and current_user_id != -1 %}
+                    <button id="sub_btn" onload="subscribe()" style="float: left; border-radius: 20px; width: 130px; background-color: black; color: white">Подписаться</button>
+                {% endif %}
+            </div><br><br><br>
+
+            <div class="editing_menu">
+                {% if current_user.is_authenticated and current_user.id == channel_id %}
+                    <a href="/edit_video/{{ url_filename }}" style="margin-right: 10px;">
+                        Изменить
+                    </a>
+                    <a href="/delete_video/{{ url_filename }}">
+                        Удалить
+                    </a>
+                {% endif %}
+            </div><br>
+
+            <div class="video_menu" style="display: flex;">
+                {% if current_user_id != channel_id and current_user_id != -1 %}
+                    <div id="like" class="like" style="border: 2px solid rgb(230, 230, 230); background-color: rgb(230, 230, 230); border-radius: 10px; padding: 5px; padding-top: 1px; padding-bottom: 1px; margin-right: 5px; width: auto; height: 32px;">
+                        <img src="{{ url_for('static', filename='icon/' + 'like.png') }}" style="width: 20px; height: auto;">
+                        {{ count_like }}
+                    </div>
+                {% else %}
+                    <div class="like" style="border: 2px solid #F0F0F0; background-color: #F0F0F0; border-radius: 10px; padding: 5px; padding-top: 1px; padding-bottom: 1px; margin-right: 5px; width: auto; height: 32px;">
+                        <img src="{{ url_for('static', filename='icon/' + 'like.png') }}" style="width: 20px; height: auto;">
+                        <h5 id="count_like" style="float: right; font-size: 18px; text-align: center; margin-top: 5px; margin-left: 5px;">{{ count_like }}</h5>
+                    </div>
+                {% endif %}
+                <div class="share">
+                    <div class="ya-share2" data-curtain data-shape="round" data-color-scheme="whiteblack" data-limit="0" data-more-button-type="short" data-services="messenger,vkontakte,odnoklassniki,telegram,twitter,viber,whatsapp" style="margin-left: 10px;"></div>
+                </div>
+            </div>
+
+            <div class="description_video" style="border: 2px solid #F0F0F0; background-color: #F0F0F0; border-radius: 10px; margin-top: 5px;">
+                <div style="margin-top: 10px; font-size: 15px; font-weight: 650; padding-left: 10px;">
+                    {{ count_views }}
+                </div>
+                {% autoescape false %}
+                    <pre style="font-size: 15px; font-weight: 400; font-family: Roboto, Arial, sans-serif; padding: 10px;">{{ description }}</pre>
+                {% endautoescape %}
+                <script src="https://yastatic.net/share2/share.js"></script>
+            </div>
+        </div>
+
+        <div style="float: left; width: calc(5% - 32px); height: 100%;"></div>
+        <div id="index_content_video" style="margin-right: 10px; margin-top: -10px; display: grid;"></div>
+    </div>
+
+    <script>
+        const player = new Plyr('.item_video video', {
+            title: `{video_name}`
+        })
+    </script>
+
+
+    <script>
+        let sub_button = document.getElementById('sub_btn')
+        let channel_name = document.getElementById('channel_name').innerHTML
+        let like_btn = document.getElementById("like")
+
+        let element_load = document.getElementsByClassName('container_watch')[0]
+        element_load.onload = loadPage()
+
+        function getCookie(name) {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        function loadPage() {
+            const is_follower = getCookie("is_follower")
+
+            if (is_follower != "False" & sub_button != null) {
+                sub_button.textContent = 'Отписаться'
+                sub_button.style.backgroundColor = "white"
+                sub_button.style.color = "black"
+            }
+
+            const is_like = getCookie("is_like")
+
+            if (is_like != "False") {
+                like_btn.style.backgroundColor = "#ff6a4d"
+            }
+
+        }
+
+        function httpGet(theUrl)
+        {
+            return new Promise((resolve, reject) => {
+                const xhr = new XMLHttpRequest()
+
+                xhr.open("GET", theUrl)
+
+                xhr.onload = () => {
+                    resolve(xhr.response)
+                }
+
+                xhr.send()
+            })
+        }
+
+        like_btn.onclick = function() {
+            const current_user_id = getCookie("current_user_id")
+            const video_id = getCookie("video_id")
+
+
+            if (like_btn.style.backgroundColor == "rgb(255, 106, 77)") {
+                like_btn.style.backgroundColor = "#F0F0F0"
+
+                httpGet(`/api/video/delete_like/${video_id}/${current_user_id}`)
+            }
+
+            else {
+                like_btn.style.backgroundColor = "#ff6a4d"
+
+                httpGet(`/api/video/add_like/${video_id}/${current_user_id}`)
+            }
+        }
+
+        sub_button.onclick = function() {
+            const current_user_id = getCookie("current_user_id")
+
+            console.log(current_user_id)
+
+            if (sub_button.textContent == 'Подписаться') {
+                sub_button.textContent = 'Отписаться'
+                sub_button.style.backgroundColor = "white"
+                sub_button.style.color = "black"
+
+                httpGet(`/api/add_subscribe/${channel_name}/${current_user_id}`)
+
+
+            } else {
+                sub_button.textContent = 'Подписаться'
+                sub_button.style.backgroundColor = "black"
+                sub_button.style.color = "white"
+
+                httpGet(`/api/delete_subscribe/${channel_name}/${current_user_id}`)
+            }
+        }
+    </script>
+{% endblock %}

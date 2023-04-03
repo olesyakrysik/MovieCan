@@ -1,0 +1,277 @@
+hr.solid {
+  border-top: 3px solid rgb(0, 0, 0);
+}
+
+.content_block_all {
+    margin-top: 70px;
+    margin-right: 0px;
+}
+
+form.login_form {
+    margin-top: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 450px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 50px;
+    font-size: 18px;
+}
+
+.search {
+    width: 400px;
+    float: center;
+    display: flex;
+    margin-top: 10px;
+    height: 35px;
+    border: solid;
+    border-radius: 20px;
+}
+
+#search_input {
+    width: 100%;
+    float: center;
+    border: none;
+    padding: 5px;
+    border-radius: 20px;
+}
+
+#search_input {
+    outline:none!important;
+    margin-left: 10px;
+}
+
+#search_button {
+    margin-right: 5px;
+}
+
+#search_button:hover {
+    background-color: rgb(200, 200, 200);
+    cursor: pointer;
+}
+
+#title {
+    float: left;
+    margin: 10px;
+    margin-left: 20px;
+    color: rgb(0, 0, 0);
+    font-family: system-ui;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+#title > strong > a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+.additionally {
+    float: right;
+    font-size: 15px;
+    padding-top: 15px;
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.additionally > p > a {
+    padding: 5px;
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    border: 1px solid rgb(220, 220, 220);
+}
+
+.additionally > p > a:hover {
+    background-color: gray;
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+
+.hover {
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 70px;
+    font-family: system-ui;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.index_content {
+    margin-top: 70;
+    margin-left: 30vh;
+    align: center;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 450px));
+    padding: 20px;
+    width: 80%;
+    justify-content: center;
+}
+
+.card {
+    overflow: hidden;
+    border-style: solid;
+    border-radius: 5px;
+}
+
+.card:hover {
+    cursor: pointer;
+}
+
+.card > a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+.card_picture > img {
+    height: 200px;
+    width: 100%;
+    border-radius: 5px;
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+}
+
+.card_picture_watch > img {
+    object-fit: cover;
+    aspect-ratio: 16 / 9;
+    float: left;
+    width: 50%;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.container_watch {
+    display: flex;
+    margin-top: 70px;
+    margin-left: 0px;
+    margin-right: 0px;
+    width: 100%;
+}
+
+.content {
+    width: 70%;
+    margin-left: 10px;
+}
+
+.content_playlist {
+    justify-content: right;
+    text-align: right;
+}
+
+.item_video {
+    width: 100%;
+}
+
+.item_video video {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    aspect-ratio: 16 / 9;
+}
+
+.details {
+    display: flex;
+    margin-top: 10px;
+}
+
+.avatar {
+    align: center;
+    float: left;
+}
+
+.meta > * {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+.meta > a:hover {
+    color: rgb(0, 0, 0);
+}
+
+.channel_btn > h6 {
+    font-size: 20px;
+}
+
+.channel {
+    width: 200px;
+    margin: 0px;
+    float: left;
+}
+
+.name_video {
+    margin: 15px;
+    margin-left: 0px;
+}
+
+.name_video > * {
+    word-break: break-word;
+    font-family: "Mistral", cursive;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+.container_index {
+    display: flex;
+    height: 100%;
+    margin-top: 70px;
+}
+
+.menu_container {
+    position: fixed;
+    border-top: 1px solid black;
+    width: auto;
+    padding: 10px;
+}
+
+.menu_container > div > a {
+    width: 30%;
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    margin-top: 5px;
+}
+
+.channel_about {
+    text-align: center;
+}
+
+.card_watch {
+    width: 100%;
+    max-width: 400px;
+    min-width: 320px;
+}
+
+.card_watch:hover {
+    cursor: pointer;
+}
+
+.card_watch > a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+#like:hover {
+    cursor: pointer;
+}
+
+.editing_menu > a {
+    background-color: black;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.editing_menu > a:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}

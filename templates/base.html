@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{{ title }}</title>
+        <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+            crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdn.plyr.io/3.7.7/plyr.css"/>
+        <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+        <script src="https://cdn.plyr.io/3.6.3/plyr.js"></script>
+
+        <script type="text/javascript">
+            window.onload = function() {
+                document.getElementById('search_button').addEventListener('click', function (e) {
+                    window.location = `/?q=${document.getElementById('search_input').value}`
+                })
+
+                document.getElementById('search_input').onkeypress = function(e){
+                    if (!e) e = window.event;
+                    var keyCode = e.code || e.key;
+                    if (keyCode == 'Enter'){
+                        window.location = `/?q=${document.getElementById('search_input').value}`
+                    }
+                }
+            }
+
+        </script>
+
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="hover">
+                <div id="title"><strong><a href="/">MovieCan.ru</a></strong></div>
+                <div class="search">
+                    <input id="search_input" type="text" name="search" value="{{ request.args.get('q', '') }}" placeholder="Введите запрос">
+                    <div id="search_button" style="width: auto; height: auto; border: none; border-radius: 20px; background-color: rgb(255, 255, 255);">
+                        <img style="width: 25px; height: 25px;" src="{{ url_for('static', filename='icon/icon-search-50.png') }}">
+                    </div>
+                </div>
+                <div class="additionally">
+                    {% if current_user.is_authenticated %}
+                        <p>
+                            <a href="/logout">Выйти</a>
+                        </p>
+                    {% else %}
+                        <p>
+                            <a href="/register">Зарегистрироваться</a>
+                            <a href="/login">Войти</a>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="content_block_all">
+               {% block content %}{% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

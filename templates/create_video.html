@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <form class="form login_form" action="" method="post" enctype="multipart/form-data">
+        <h1>Создание видеоролика</h1>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(class="form-control", type="text") }}<br>
+            {% for error in form.name.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.description.label }}<br>
+            {{ form.description(class="form-control", type="text") }}<br>
+            {% for error in form.description.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        Выберите превью для видео:
+        <input type="file" class="form-control-file" id="photo" name="input_preview" accept="image/*"><br>
+        <br>Выберите видео:<br>
+        <input type="file" class="form-control-file" id="video" name="input_video" accept="video/*">
+        <br>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        <div>{{ message }}</div>
+    </form>
+
+{% endblock %}

@@ -8,12 +8,14 @@ from flask_login import login_required, logout_user, login_user
 from flask_login import LoginManager
 
 from modules import *
+from forms import *
 
 from data.users import User
 from data.video import Video
 from data import db_session, video_api, user_api
 
-from forms import *
+
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "9ECcXCwZGN"
